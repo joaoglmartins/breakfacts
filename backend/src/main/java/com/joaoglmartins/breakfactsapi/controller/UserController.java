@@ -20,28 +20,28 @@ import com.joaoglmartins.breakfactsapi.service.UserService;
 @RestController
 @RequestMapping("/api/users")
 public class UserController {
-	private final UserService userService;
+	private final UserService service;
 
-    public UserController(UserService userService) {
-        this.userService = userService;
+    public UserController(UserService service) {
+        this.service = service;
     }
 
     @PostMapping
     public ResponseEntity<User> createUser(@RequestBody Map<String, String> request) {
         String email = request.get("email");
         String passwordHash = request.get("passwordHash");
-        User created = userService.createUser(email, passwordHash);
+        User created = service.createUser(email, passwordHash);
         return ResponseEntity.ok(created);
     }
 
     @GetMapping
     public ResponseEntity<List<User>> getAllUsers() {
-        return ResponseEntity.ok(userService.getAllUsers());
+        return ResponseEntity.ok(service.getAllUsers());
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<User> getUserById(@PathVariable UUID id) {
-        return userService.getUserById(id)
+        return service.getUserById(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
@@ -50,13 +50,13 @@ public class UserController {
     public ResponseEntity<User> updateUser(@PathVariable UUID id, @RequestBody Map<String, String> request) {
         String email = request.get("email");
         String passwordHash = request.get("passwordHash");
-        User updated = userService.updateUser(id, email, passwordHash);
+        User updated = service.updateUser(id, email, passwordHash);
         return ResponseEntity.ok(updated);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteUser(@PathVariable UUID id) {
-        userService.deleteUser(id);
+        service.deleteUser(id);
         return ResponseEntity.noContent().build();
     }
 }

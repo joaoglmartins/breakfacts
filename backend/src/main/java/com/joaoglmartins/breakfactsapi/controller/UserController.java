@@ -59,4 +59,16 @@ public class UserController {
         service.deleteUser(id);
         return ResponseEntity.noContent().build();
     }
+    
+    @PostMapping("/{userId}/topics/{topicId}")
+    public ResponseEntity<Void> addTopic(@PathVariable UUID userId, @PathVariable UUID topicId) {
+        service.addTopicToUser(userId, topicId);
+        return ResponseEntity.ok().build();
+    }
+
+    @DeleteMapping("/{userId}/topics/{topicId}")
+    public ResponseEntity<Void> removeTopic(@PathVariable UUID userId, @PathVariable UUID topicId) {
+        service.removeTopicFromUser(userId, topicId);
+        return ResponseEntity.noContent().build();
+    }
 }

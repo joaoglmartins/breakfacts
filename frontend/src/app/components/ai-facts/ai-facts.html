@@ -3,5 +3,5 @@
 }
 
 @if (!loading && fact) {
-  <div><p id="fact-content">{{ fact }}</p></div>
+  <div id="fact-content" [innerHTML]="fact"></div>
 }

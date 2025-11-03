@@ -1,6 +1,9 @@
 import { Component, Input, OnChanges, ChangeDetectorRef } from '@angular/core';
 import { AiApiService } from '../../services/ai-api-service';
 import { finalize } from 'rxjs';
+import { marked } from 'marked';
+import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
+import { raw } from 'express';
 
 @Component({
   selector: 'app-ai-facts',
@@ -10,11 +13,14 @@ import { finalize } from 'rxjs';
 })
 export class AiFacts implements OnChanges {
   @Input() topicId!: string;
-  fact: string = '';
+  fact: SafeHtml | null = null;
   loading = false;
 
   
-  constructor(private api: AiApiService, private cdr: ChangeDetectorRef) {}
+  constructor(
+    private api: AiApiService, 
+    private cdr: ChangeDetectorRef, 
+    private sanitizer: DomSanitizer) {}
   
   ngOnChanges(): void {
     if (!this.topicId) return;
@@ -25,13 +31,12 @@ export class AiFacts implements OnChanges {
     this.api.getFact(this.topicId)
       .pipe(finalize(() => {
         this.loading = false;
-        console.log(this.fact);
-        console.log('Loading ' + this.loading);
         this.cdr.detectChanges();
       }))
       .subscribe({
         next: (response) => {
-          this.fact = response.text;
+          const rawFact = marked.parse(response.text) as string;
+          this.fact = this.sanitizer.bypassSecurityTrustHtml(rawFact);
         },
         error: (err) => console.error('Error generating fact:', err)
       });

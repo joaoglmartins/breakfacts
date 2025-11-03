@@ -2,5 +2,13 @@
   <h1>Welcome to Breakfast Facts ☕</h1>
   <p>Discover new facts about your favorite topics each morning!</p>
 
-  <button routerLink="/generate">Start Reading</button>
+  <ng-container *ngIf="topics$ | async as topics">
+      <div *ngFor="let topic of topics">
+        <button (click)="generateFact(topic.id)">
+          {{ topic.name }}
+        </button>
+      </div>
+  </ng-container>
+
+  <app-ai-facts [topicId]="selectedTopicId"></app-ai-facts>
 </div>

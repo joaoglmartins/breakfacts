@@ -4,5 +4,4 @@ import { AiFacts } from './components/ai-facts/ai-facts';
 
 export const routes: Routes = [
     { path: '', component: Home },
-    { path: 'generate', component: AiFacts },
 ];

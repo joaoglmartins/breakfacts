@@ -1,0 +1,35 @@
+<div class="auth-container">
+  <h2>Sign Up</h2>
+
+  <form (ngSubmit)="onSignup()" #signupForm="ngForm">
+    <div class="form-group">
+      <label>Username</label>
+      <input
+        type="text"
+        name="username"
+        [(ngModel)]="username"
+        required
+        placeholder="Choose a username"
+      />
+    </div>
+
+    <div class="form-group">
+      <label>Password</label>
+      <input
+        type="password"
+        name="password"
+        [(ngModel)]="password"
+        required
+        placeholder="Choose a password"
+      />
+    </div>
+
+    <button type="submit" [disabled]="signupForm.invalid">Sign Up</button>
+  </form>
+
+  <p>
+    Already have an account?
+    <a routerLink="/login">Login</a>
+  </p>
+</div>
+

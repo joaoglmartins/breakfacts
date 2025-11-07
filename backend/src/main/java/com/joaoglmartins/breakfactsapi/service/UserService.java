@@ -5,6 +5,7 @@ import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.UUID;
 
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.joaoglmartins.breakfactsapi.model.Topic;
@@ -20,13 +21,15 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final TopicRepository topicRepository;
+    private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     public UserService(UserRepository userRepository, TopicRepository topicRepository) {
         this.userRepository = userRepository;
         this.topicRepository = topicRepository;
     }
 
-    public User createUser(String email, String passwordHash) {
+    public User createUser(String email, String password) {
+    	String passwordHash = passwordEncoder.encode(password);
         if (userRepository.existsByEmail(email)) {
             throw new IllegalArgumentException("Email already exists: " + email);
         }
@@ -46,7 +49,8 @@ public class UserService {
         return userRepository.findAll();
     }
 
-    public User updateUser(UUID id, String newEmail, String newPasswordHash) {
+    public User updateUser(UUID id, String newEmail, String newPassword) {
+    	String newPasswordHash = passwordEncoder.encode(newPassword);
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new NoSuchElementException("User not found: " + id));
         if (newEmail != null) user.setEmail(newEmail);
@@ -56,6 +60,12 @@ public class UserService {
 
     public void deleteUser(UUID id) {
         userRepository.deleteById(id);
+    }
+    
+    public boolean validateCredentials(String email, String password) {
+        return userRepository.findByEmail(email)
+                .map(user -> passwordEncoder.matches(password, user.getPasswordHash()))
+                .orElse(false);
     }
 
     public void addTopicToUser(UUID userId, UUID topicId) {

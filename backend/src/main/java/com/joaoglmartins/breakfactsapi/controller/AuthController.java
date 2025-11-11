@@ -31,12 +31,12 @@ public class AuthController {
         String email = body.get("email");
         String password = body.get("password");
 
-        if (userService.getUserByEmail("email") != null ) {
+        if (userService.getUserByEmail(email).isPresent()) {
             return ResponseEntity.badRequest().body(Map.of("error", "Email already exists"));
         }
 
         User user = userService.createUser(email, password);
-        return ResponseEntity.ok(Map.of("message", "User created successfully", "username", user.getEmail()));
+        return ResponseEntity.ok(Map.of("message", "User created successfully", "email", user.getEmail()));
     }
 
     @PostMapping("/login")

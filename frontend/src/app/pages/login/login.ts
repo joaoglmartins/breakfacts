@@ -10,21 +10,24 @@ import { Auth } from '../../services/auth';
   styleUrl: './login.scss',
 })
 export class Login {
-  username = '';
+  email = '';
   password = '';
   errorMessage = '';
 
   constructor(private router: Router, private authService : Auth) {}
 
   onLogin() {
-    this.authService.login(this.username, this.password).subscribe({
+    this.authService.login(this.email, this.password).subscribe({
       next: (response) => {
-        console.log('Login successful:', response);
-        this.router.navigate(['/']);
+        if (response.token) {
+          this.authService.saveToken(response.token);
+          alert('Login successful!');
+          this.router.navigate(['/']);
+        }
       },
       error: (error) => {
         console.error('Login failed:', error);
-        this.errorMessage = 'Invalid username or password.';
+        this.errorMessage = 'Invalid email or password.';
       }
     });
   }

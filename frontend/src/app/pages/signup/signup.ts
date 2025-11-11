@@ -10,14 +10,14 @@ import { Auth } from '../../services/auth';
   styleUrl: './signup.scss',
 })
 export class Signup {
-  username = '';
+  email = '';
   password = '';
   errorMessage = '';
 
   constructor(private router: Router, private authService : Auth) {}
 
   onSignup() {
-    this.authService.signup(this.username, this.password).subscribe({
+    this.authService.signup(this.email, this.password).subscribe({
       next: (response) => {
         console.log('Signup successful:', response);
         alert('Account created successfully! Please log in.');

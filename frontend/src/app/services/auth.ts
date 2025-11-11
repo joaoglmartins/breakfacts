@@ -10,11 +10,30 @@ export class Auth {
 
   constructor(private http: HttpClient) {}
 
-  login(username: string, password: string): Observable<any> {
-    return this.http.post(`${environment.apiBaseUrl}/login`, { username, password });
+  private isBrowser(): boolean {
+    return typeof window !== 'undefined' && !!window.localStorage;
   }
 
-  signup(username: string, password: string): Observable<any> {
-    return this.http.post(`${environment.apiBaseUrl}/signup`, { username, password });
+  login(email: string, password: string): Observable<any> {
+    return this.http.post(`${environment.apiBaseUrl}/auth/login`, { email, password });
+  }
+
+  signup(email: string, password: string): Observable<any> {
+    return this.http.post(`${environment.apiBaseUrl}/auth/signup`, { email, password });
+  }
+
+  saveToken(token: string) {
+    localStorage.setItem('token', token);
+  }
+
+  getToken(): string | null {
+    if (this.isBrowser()) {
+      return localStorage.getItem('token');
+    }
+    return null;
+  }
+
+  logout() {
+    localStorage.removeItem('token');
   }
 }

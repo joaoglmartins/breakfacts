@@ -32,7 +32,7 @@ public class JwtUtil {
                 .compact();
     }
 
-    public String validateTokenAndGetUsername(String token) {
+    public String validateTokenAndGetEmail(String token) {
         try {
             return Jwts.parserBuilder()
                     .setSigningKey(getSigningKey())

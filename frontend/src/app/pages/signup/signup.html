@@ -3,13 +3,13 @@
 
   <form (ngSubmit)="onSignup()" #signupForm="ngForm">
     <div class="form-group">
-      <label>Username</label>
+      <label>Email</label>
       <input
         type="text"
-        name="username"
-        [(ngModel)]="username"
+        name="email_breakfacts"
+        [(ngModel)]="email"
         required
-        placeholder="Choose a username"
+        placeholder="Choose an email"
       />
     </div>
 
@@ -29,7 +29,7 @@
 
   <p>
     Already have an account?
-    <a routerLink="/login">Login</a>
+    <a href="/login">Login</a>
   </p>
 </div>
 

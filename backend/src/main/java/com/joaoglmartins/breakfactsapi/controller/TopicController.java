@@ -13,9 +13,9 @@ import org.springframework.web.bind.annotation.RestController;
 import com.joaoglmartins.breakfactsapi.model.Topic;
 import com.joaoglmartins.breakfactsapi.service.TopicService;
 
-@CrossOrigin(origins = "http://localhost:4200")
 @RestController
 @RequestMapping("/api/topics")
+@CrossOrigin(origins = "http://localhost:4200")
 public class TopicController {
 	private final TopicService service;
 

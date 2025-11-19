@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend
+  namespace: breakfacts
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: frontend
+  template:
+    metadata:
+      labels:
+        app: frontend
+    spec:
+      containers:
+        - name: frontend
+          image: ghcr.io/joaoglmartins/breakfacts-frontend:latest
+          ports:
+            - containerPort: 80
+          env:
+            - name: API_URL
+              value: http://backend.breakfacts.svc.cluster.local:8080
